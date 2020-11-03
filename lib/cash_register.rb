@@ -1,41 +1,46 @@
-class CashRegister
+class CashRegister 
 
-    attr_accessor :total , :discount , :price , :items , :previous
- def initialize(discount=0)
-   
+attr_accessor :total, :discount, :quantity, :items, :last_item
+
+def initialize(discount=0)
     @total = 0
     @discount = discount
-    @items = [] 
+    @items = []
+end
 
-  end 
-
-  def add_item(title , price, quantity = 1 )
-    @price = price 
-    @total += (price * quantity)
-    if quantity > 1
-        number = 0 
-        while number < quantity
-            @items << title
-            number += 1
-        end 
-    else 
-        @items << items 
-    end
-     self.previous = price * quantity 
-  end 
+def add_item(title,price,quantity=1)
+    i = 1 
+    self.total = self.total + price * quantity
+    while i <= quantity
+      self.items << title
+      i += 1
+    end 
+    self.last_item = price * quantity
+   
+end
 
 def apply_discount
-    if @discount > 0 
-        @total_price = (discount * price) / 100
-        @total -= @total_price 
-        p "After the discount, the total comes to $800."
-    else 
-        p "There is no discount to apply."
-    end
+ 
+    if @discount == 0 
+    return "There is no discount to apply."
+    else
+    self.total = self.total - (self.total * (discount.to_f/100.0))
+    return  "After the discount, the total comes to $#{self.total.to_i}."
+    end 
 end
-    def void_last_transaction
-        @total = @total -= @previous
+
+def void_last_transaction
+  
+   
+   if(self.items.length == 0)
+        self.total = 0.0
+        return self.total
+    else 
+        self.total -= self.last_item
+        self.items.pop
+        return self.total
     end
 
+end
 
 end 
